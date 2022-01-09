@@ -193,7 +193,7 @@ tx.Query(ctx, getQuery(|))
 
 ### In and Around Backticks
 
-You can do "di`" or "ya`" for multi-line backtick operations.
+You can do `` "di`" `` or `` "ya`" `` for multi-line backtick operations.
 
 ### In and Around More Characters
 
