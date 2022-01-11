@@ -12,6 +12,7 @@ add more mappings by providing keys to the config.
    - [Empty Lines](#empty-lines)
    - [End of Lines](#end-of-lines)
    - [Pair of Brackets](#pair-of-brackets)
+   - [Augmentation](#augmentation)
 4. [Text Objects](#text-objects)
    - [Next Object](#next-object)
    - [Pseudo Line](#pseudo-line)
@@ -103,6 +104,9 @@ Here is the default settings:
       },
     },
     brackets = "<M-{>",
+    augment_vim = {
+      jumplist = 4, -- put in jumplist if count of j/k is more than 4
+    },
   },
   textobj = {
     next_obj = {
@@ -164,6 +168,22 @@ After:
 ```
 for a := 0; a < 10; a++ {
     |
+}
+```
+
+## Augmentation
+
+At the moment we have one augmentation. By default we hook into numbered jumps
+(j and k), and if the count is greater than the value, we populate the jump
+list. To change the count number:
+
+```lua
+{
+  mappings = {
+    augment_vim = {
+      jumplist = 2,
+    },
+  },
 }
 ```
 

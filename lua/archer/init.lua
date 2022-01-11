@@ -20,7 +20,11 @@ local defaults = { --{{{1
       },
     }, --}}}
     brackets = "<M-{>",
+    augment_vim = {
+      jumplist = 4, -- put in jumplist if count of j/k is more than 4
+    },
   },
+
   textobj = {
     next_obj = {
       i_next = "in",

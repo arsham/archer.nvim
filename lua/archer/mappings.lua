@@ -153,6 +153,27 @@ local function setup_ending(opts) --{{{
   end
 end --}}}
 
+local function augment_vim(opts)
+  vim.validate({
+    augment = { opts, "table", false },
+    jumplist = { opts.jumplist, { "number", "boolean", "nil" }, false },
+  })
+
+  -- stylua: ignore start
+  if opts.jumplist and opts.jumplist > 1 then
+    vim.keymap.set("n", "k",
+      string.format([[(v:count > %s ? "m'" . v:count : '') . 'k']], opts.jumplist),
+      { noremap = true, expr = true, desc = "numbered motions in the jumplist" }
+    )
+    vim.keymap.set("n", "j",
+      string.format([[(v:count > %s ? "m'" . v:count : '') . 'j']], opts.jumplist),
+      { noremap = true, expr = true, desc = "numbered motions in the jumplist" }
+    )
+  end
+  -- stylua: ignore end
+end
+
+
 -- stylua: ignore start
 local function config(opts) --{{{
   vim.validate({
@@ -173,6 +194,11 @@ local function config(opts) --{{{
     vim.keymap.set("i", opts.brackets, "<Esc>A {<CR>}<Esc>O", opt)
     vim.keymap.set("n", opts.brackets, "A {<CR>}<Esc>O",      opt)
   end --}}}
+
+  if opts.augment_vim then --{{{
+    augment_vim(opts.augment_vim)
+  end --}}}
+
 end --}}}
 -- stylua: ignore end
 
