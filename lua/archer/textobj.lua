@@ -93,8 +93,8 @@ local function config(opts)
   end --}}}
 
   -- Backtick support {{{
-  if opts.backticks then
-    local b = opts.backticks
+  if opts.backtick then
+    local b = opts.backtick
 
     local opt = { noremap = true, silent = true, desc = "in backticks" }
     vim.keymap.set("v", "i" .. b, function() in_backticks(false) end, opt)
