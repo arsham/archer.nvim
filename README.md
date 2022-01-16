@@ -29,7 +29,6 @@ This plugin depends are the following libraries. Please make sure to add them
 as dependencies in your package manager:
 
 - [arshlib.nvim](https://github.com/arsham/arshlib.nvim)
-- [vim-repeat](https://github.com/tpope/vim-repeat)
 - [nvim.lua](https://github.com/norcalli/nvim.lua)
 
 ## Installation

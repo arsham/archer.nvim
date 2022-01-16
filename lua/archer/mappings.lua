@@ -17,11 +17,10 @@ local function end_of_line(loc, content, char, remove) --{{{2
 end --}}}
 
 ---Add the char at the end of the line, or the visually selected area.
----@param name string the name of mapping to repeat.
 ---@param char string char to add.
 ---@param remove boolean if false, the char is added, otherwise the last
 ---character is removed.
-local function change_line_ends(name, char, remove) --{{{2
+local function change_line_ends(char, remove) --{{{2
   local mode = vim.api.nvim_get_mode().mode
   if mode == "n" or mode == "i" then
     local loc = vim.api.nvim_win_get_cursor(0)
@@ -40,10 +39,16 @@ local function change_line_ends(name, char, remove) --{{{2
       end_of_line(start + k, line, char, remove)
     end
   end
-
-  local key = vim.api.nvim_replace_termcodes(name, true, false, true)
-  vim.fn["repeat#set"](key, vim.v.count)
 end --}}}
+
+local last_key = ""
+-- selene: allow(global_usage)
+function _G.add_to_line_end()
+  change_line_ends(last_key, false)
+end
+function _G.remove_from_line_end()
+  change_line_ends(last_key, true)
+end
 
 ---Inserts empty lines near the cursor.
 ---@param count number  Number of lines to insert.
@@ -109,44 +114,42 @@ local function setup_ending(opts) --{{{
 
   for n, tuple in pairs(end_mapping) do
     -- Adding {{{
-    local name1 = string.format("<Plug>AddEnd%s", n)
     local key1 = string.format("<%s-%s>", opts.modifier, tuple.add)
     local desc = string.format("Add %s at the end of line", n)
     local opt = { noremap = true, desc = desc }
 
-    vim.keymap.set("n", name1, function()
-      change_line_ends(name1, tuple.add)
-    end, opt)
-    vim.keymap.set("n", key1, name1, { desc = desc })
+    vim.keymap.set("n", key1, function()
+      last_key = tuple.add
+      vim.opt.opfunc = "v:lua.add_to_line_end"
+      return "g@<cr>"
+    end, { noremap = true, expr = true, desc = desc })
 
     vim.keymap.set("i", key1, function()
-      change_line_ends(name1, tuple.add)
+      change_line_ends(tuple.add, false)
     end, opt)
 
-    vim.keymap.set("v", name1, function()
-      change_line_ends(name1, tuple.add)
-    end, { noremap = true, desc = desc })
-    vim.keymap.set("v", key1, name1, { desc = desc })
+    vim.keymap.set("v", key1, function()
+      change_line_ends(tuple.add, false)
+    end, opt)
     --}}}
 
     -- Deleting {{{
-    local name2 = string.format("<Plug>DelEnd%s", n)
     local key2 = string.format("<%s-%s>", opts.modifier, tuple.remove)
     desc = string.format("Remove %s from the end of line", n)
 
-    vim.keymap.set("n", name2, function()
-      change_line_ends(name2, tuple.add, true)
-    end, { noremap = true, desc = desc })
-    vim.keymap.set("n", key2, name2, { desc = desc })
+    vim.keymap.set("n", key2, function()
+      last_key = tuple.add
+      vim.opt.opfunc = "v:lua.remove_from_line_end"
+      return "g@<cr>"
+    end, { noremap = true, expr = true, desc = desc })
 
     vim.keymap.set("i", key2, function()
-      change_line_ends(name2, tuple.add, true)
-    end, { noremap = true, desc = desc })
+      change_line_ends(tuple.add, true)
+    end, opt)
 
-    vim.keymap.set("v", name2, function()
-      change_line_ends(name2, tuple.add, true)
-    end, { noremap = true, desc = desc })
-    vim.keymap.set("v", key2, name2, { desc = desc })
+    vim.keymap.set("v", key2, function()
+      change_line_ends(tuple.add, true)
+    end, opt)
     --}}}
   end
 end --}}}
