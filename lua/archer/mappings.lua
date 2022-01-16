@@ -46,11 +46,10 @@ local function change_line_ends(name, char, remove) --{{{2
 end --}}}
 
 ---Inserts empty lines near the cursor.
----@param name string name of the mapping to register for repeating.
 ---@param count number  Number of lines to insert.
 ---@param add number 0 to insert below current line, -1 to insert above current
 -- line.
-local function insert_empty_lines(name, count, add) --{{{2
+local function insert_empty_lines(count, add) --{{{2
   if count == 0 then
     count = 1
   end
@@ -60,9 +59,15 @@ local function insert_empty_lines(name, count, add) --{{{2
   end
   local pos = vim.api.nvim_win_get_cursor(0)
   vim.api.nvim_buf_set_lines(0, pos[1] + add, pos[1] + add, false, lines)
-  local key = vim.api.nvim_replace_termcodes(name, true, false, true)
-  vim.fn["repeat#set"](key, vim.v.count)
 end --}}}
+
+-- selene: allow(global_usage)
+function _G.empty_line_below()
+  insert_empty_lines(vim.v.count, 0)
+end
+function _G.empty_line_above()
+  insert_empty_lines(vim.v.count, -1)
+end
 
 local string_type = { "string", "nil", "boolean" }
 local function setup_space_mappings(opts) --{{{
@@ -71,28 +76,21 @@ local function setup_space_mappings(opts) --{{{
     below = { opts.below, string_type, false },
   }) --}}}
 
-  -- stylua: ignore start
-  if opts.above then--{{{
+  if opts.above then --{{{
     local desc = "insert [count]empty line(s) above current line"
-    vim.keymap.set("n", "<Plug>EmptySpaceBefore", function()
-      insert_empty_lines("<Plug>EmptySpaceBefore", vim.v.count, -1)
-    end, { noremap = true, silent = true, desc = desc })
-    vim.keymap.set("n", opts.above, "<Plug>EmptySpaceBefore",
-      { noremap = true, silent = true, desc = desc }
-    )
-  end--}}}
+    vim.keymap.set("n", opts.above, function()
+      vim.opt.opfunc = "v:lua.empty_line_above"
+      return "g@<cr>"
+    end, { noremap = true, silent = true, expr = true, desc = desc })
+  end --}}}
 
-  if opts.below then--{{{
+  if opts.below then --{{{
     local desc = "insert [count]empty line(s) below current line"
-    vim.keymap.set("n", "<Plug>EmptySpaceAfter", function()
-      insert_empty_lines("<Plug>EmptySpaceAfter", vim.v.count, 0)
-    end, { noremap = true, silent = true, desc = desc })
-
-    vim.keymap.set("n", opts.below, "<Plug>EmptySpaceAfter",
-      { noremap = true, silent = true, desc = desc }
-    )
-  end--}}}
-  -- stylua: ignore end
+    vim.keymap.set("n", opts.below, function()
+      vim.opt.opfunc = "v:lua.empty_line_below"
+      return "g@<cr>"
+    end, { noremap = true, silent = true, expr = true, desc = desc })
+  end --}}}
 end --}}}
 
 ---Add coma at the end of the line, or the visually selected area.
