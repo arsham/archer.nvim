@@ -85,7 +85,7 @@ local function setup_space_mappings(opts) --{{{
     local desc = "insert [count]empty line(s) above current line"
     vim.keymap.set("n", opts.above, function()
       vim.opt.opfunc = "v:lua.empty_line_above"
-      return "g@_"
+      return "g@l"
     end, { noremap = true, silent = true, expr = true, desc = desc })
   end --}}}
 
@@ -93,7 +93,7 @@ local function setup_space_mappings(opts) --{{{
     local desc = "insert [count]empty line(s) below current line"
     vim.keymap.set("n", opts.below, function()
       vim.opt.opfunc = "v:lua.empty_line_below"
-      return "g@_"
+      return "g@l"
     end, { noremap = true, silent = true, expr = true, desc = desc })
   end --}}}
 end --}}}
@@ -121,7 +121,7 @@ local function setup_ending(opts) --{{{
     vim.keymap.set("n", key1, function()
       last_key = tuple.add
       vim.opt.opfunc = "v:lua.add_to_line_end"
-      return "g@_"
+      return "g@l"
     end, { noremap = true, expr = true, desc = desc })
 
     vim.keymap.set("i", key1, function()
@@ -140,7 +140,7 @@ local function setup_ending(opts) --{{{
     vim.keymap.set("n", key2, function()
       last_key = tuple.add
       vim.opt.opfunc = "v:lua.remove_from_line_end"
-      return "g@_"
+      return "g@l"
     end, { noremap = true, expr = true, desc = desc })
 
     vim.keymap.set("i", key2, function()
