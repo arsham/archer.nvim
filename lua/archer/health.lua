@@ -1,22 +1,21 @@
 local M = {}
 local health = require("health")
 
-M.check = function()
-  health.report_start("Listish Health Check")
-  if not pcall(require, "arshlib") then
-    health.report_error("arshlib.nvim was not found", {
-      'Please install "arsham/arshlib.nvim"',
-    })
-  else
-    health.report_ok("arshlib.nvim is installed")
-  end
+local libs = {
+  arshlib = "arsham/arshlib.nvim",
+  nvim = "norcalli/nvim.lua",
+}
 
-  if not pcall(require, "nvim") then
-    health.report_error("nvim.lua was not found", {
-      'Please install "norcalli/nvim.lua"',
-    })
-  else
-    health.report_ok("nvim.lua is installed")
+M.check = function()
+  health.report_start("Archer Health Check")
+  for name, package in pairs(libs) do
+    if not pcall(require, name) then
+      health.report_error(package .. " was not found", {
+        'Please install "' .. package .. '"',
+      })
+    else
+      health.report_ok(package .. " is installed")
+    end
   end
 end
 

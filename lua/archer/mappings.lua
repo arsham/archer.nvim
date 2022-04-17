@@ -86,7 +86,7 @@ local function setup_space_mappings(opts) --{{{
     vim.keymap.set("n", opts.above, function()
       vim.opt.opfunc = "v:lua.empty_line_above"
       return "g@l"
-    end, { noremap = true, silent = true, expr = true, desc = desc })
+    end, { silent = true, expr = true, desc = desc })
   end --}}}
 
   if opts.below then --{{{
@@ -94,7 +94,7 @@ local function setup_space_mappings(opts) --{{{
     vim.keymap.set("n", opts.below, function()
       vim.opt.opfunc = "v:lua.empty_line_below"
       return "g@l"
-    end, { noremap = true, silent = true, expr = true, desc = desc })
+    end, { silent = true, expr = true, desc = desc })
   end --}}}
 end --}}}
 
@@ -116,13 +116,13 @@ local function setup_ending(opts) --{{{
     -- Adding {{{
     local key1 = string.format("<%s-%s>", opts.modifier, tuple.add)
     local desc = string.format("Add %s at the end of line", n)
-    local opt = { noremap = true, desc = desc }
+    local opt = { desc = desc }
 
     vim.keymap.set("n", key1, function()
       last_key = tuple.add
       vim.opt.opfunc = "v:lua.add_to_line_end"
       return "g@l"
-    end, { noremap = true, expr = true, desc = desc })
+    end, { expr = true, desc = desc })
 
     vim.keymap.set("i", key1, function()
       change_line_ends(tuple.add, false)
@@ -141,7 +141,7 @@ local function setup_ending(opts) --{{{
       last_key = tuple.add
       vim.opt.opfunc = "v:lua.remove_from_line_end"
       return "g@l"
-    end, { noremap = true, expr = true, desc = desc })
+    end, { expr = true, desc = desc })
 
     vim.keymap.set("i", key2, function()
       change_line_ends(tuple.add, true)
@@ -164,11 +164,11 @@ local function augment_vim(opts)
   if opts.jumplist and opts.jumplist > 1 then
     vim.keymap.set("n", "k",
       string.format([[(v:count > %s ? "m'" . v:count : '') . 'k']], opts.jumplist),
-      { noremap = true, expr = true, desc = "numbered motions in the jumplist" }
+      { expr = true, desc = "numbered motions in the jumplist" }
     )
     vim.keymap.set("n", "j",
       string.format([[(v:count > %s ? "m'" . v:count : '') . 'j']], opts.jumplist),
-      { noremap = true, expr = true, desc = "numbered motions in the jumplist" }
+      { expr = true, desc = "numbered motions in the jumplist" }
     )
   end
   -- stylua: ignore end
@@ -191,7 +191,7 @@ local function config(opts) --{{{
   end
 
   if opts.brackets then --{{{
-    local opt = { noremap = true, desc = "Insert a pair of brackets and go into insert mode" }
+    local opt = { desc = "Insert a pair of brackets and go into insert mode" }
     vim.keymap.set("i", opts.brackets, "<Esc>A {<CR>}<Esc>O", opt)
     vim.keymap.set("n", opts.brackets, "A {<CR>}<Esc>O",      opt)
   end --}}}
