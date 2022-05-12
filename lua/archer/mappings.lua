@@ -106,10 +106,12 @@ local function setup_ending(opts) --{{{
   local end_mapping = {}
 
   for name, val in pairs(opts) do
-    end_mapping[name:upper()] = {
-      add = val.add,
-      remove = val.remove,
-    }
+    if name ~= "modifier" then
+      end_mapping[name:upper()] = {
+        add = val.add,
+        remove = val.remove,
+      }
+    end
   end
 
   for n, tuple in pairs(end_mapping) do
