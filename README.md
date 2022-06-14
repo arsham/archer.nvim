@@ -22,13 +22,13 @@ add more mappings by providing keys to the config.
 
 ## Requirements
 
-This plugin supports [Neovim 0.7.0](https://github.com/neovim/neovim/releases/tag/v0.7.0).
+This plugin supports [Neovim
+0.7.0](https://github.com/neovim/neovim/releases/tag/v0.7.0) or newer.
 
 This plugin depends are the following libraries. Please make sure to add them
 as dependencies in your package manager:
 
 - [arshlib.nvim](https://github.com/arsham/arshlib.nvim)
-- [nvim.lua](https://github.com/norcalli/nvim.lua)
 
 ## Installation
 
@@ -37,7 +37,7 @@ Use your favourite package manager to install this library. Packer example:
 ```lua
 use({
   "arsham/archer.nvim",
-  requires = { "arsham/arshlib.nvim", "norvalli/nvim.lua" },
+  requires = { "arsham/arshlib.nvim" },
   config = function() require("archer").config({}) end,
 })
 ```
