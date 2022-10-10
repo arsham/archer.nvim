@@ -42,6 +42,10 @@ local defaults = { --{{{1
       i_number = "iN",
       a_number = "aN",
     },
+    fold = {
+      i_block = "iz",
+      a_block = "az",
+    },
   },
 } --}}}
 

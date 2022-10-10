@@ -54,6 +54,7 @@ local function config(opts)
     line      = { opts.line,      { "table",  "boolean", "nil" }, true },
     numeric   = { opts.numeric,   { "table",  "boolean", "nil" }, true },
     backticks = { opts.backticks, { "string", "boolean", "nil" }, true },
+    folds     = { opts.folds,     { "table",  "boolean", "nil" }, true },
   })--}}}
 
   -- Next object support {{{
@@ -135,6 +136,23 @@ local function config(opts)
     opt = { silent = true, desc = "around backticks" }
     vim.keymap.set("v", "a" .. b, function() in_backticks(true) end, opt)
     vim.keymap.set("o", "a" .. b, function() quick.normal("x", "va" .. b) end, opt)
+  end --}}}
+
+  -- Fold support {{{
+  if opts.fold then
+    if opts.fold.i_block then
+      local opt = { silent = true, desc = "in fold block" }
+      local key = opts.fold.i_block
+      vim.keymap.set("v", key, function() quick.normal("xt", "[zjo]zkV") end, opt)
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
+    end
+
+    if opts.fold.a_block then
+      local opt = { silent = true, desc = "around fold blocks" }
+      local key = opts.fold.a_block
+      vim.keymap.set("v", key, function() quick.normal("xt", "[zo]zV") end, opt)
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
+    end
   end --}}}
 end
 -- stylua: ignore end

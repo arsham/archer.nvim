@@ -19,6 +19,7 @@ add more mappings by providing keys to the config.
    - [In and Around Backticks](#in-and-around-backticks)
    - [In and Around More Characters](#in-and-around-more-characters)
    - [In and Around Numbers](#in-and-around-numbers)
+   - [In and Around Folds](#in-and-around-folds)
 5. [License](#license)
 
 ## Requirements
@@ -126,6 +127,10 @@ Here is the default settings:
       i_number = "iN",
       a_number = "aN",
     },
+    fold = {
+      i_block = "iz",
+      a_block = "az",
+    },
   },
 }
 ```
@@ -230,6 +235,10 @@ You can add more if you like.
 ### In and Around Numbers
 
 With `iN` and `aN` you can operate on any numbers, even floating point numbers.
+
+### In and Around Folds
+
+`iz` and `az` matches in and around folds.
 
 ## License
 
