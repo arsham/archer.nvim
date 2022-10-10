@@ -97,14 +97,16 @@ local function config(opts)
   if opts.line then
     if opts.line.i_line then
       local opt = { desc = "in current line" }
-      vim.keymap.set("x", "il", function() quick.normal("xt", "g_o^") end, opt)
-      vim.keymap.set("o", "il", function() quick.normal("x", "vil") end, opt)
+      local key = opts.line.i_line
+      vim.keymap.set("x", key, function() quick.normal("xt", "g_o^") end, opt)
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
 
     if opts.line.a_line then
       local opt = { desc = "around current line" }
-      vim.keymap.set("x", "al", function() quick.normal("xt", "$o0") end, opt)
-      vim.keymap.set("o", "al", function() quick.normal("x", "val") end, opt)
+      local key = opts.line.a_line
+      vim.keymap.set("x", key, function() quick.normal("xt", "$o0") end, opt)
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end --}}}
 
