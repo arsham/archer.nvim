@@ -18,12 +18,13 @@ add more mappings by providing keys to the config.
    - [Pseudo Line](#pseudo-line)
    - [In and Around Backticks](#in-and-around-backticks)
    - [In and Around More Characters](#in-and-around-more-characters)
+   - [In and Around Numbers](#in-and-around-numbers)
 5. [License](#license)
 
 ## Requirements
 
 This plugin supports [Neovim
-0.7.0](https://github.com/neovim/neovim/releases/tag/v0.7.0) or newer.
+v0.7.0](https://github.com/neovim/neovim/releases/tag/v0.7.0) or newer.
 
 This plugin depends are the following libraries. Please make sure to add them
 as dependencies in your package manager:
@@ -36,9 +37,11 @@ Use your favourite package manager to install this library. Packer example:
 
 ```lua
 use({
-  "arsham/archer.nvim",
-  requires = { "arsham/arshlib.nvim" },
-  config = function() require("archer").config({}) end,
+	"arsham/archer.nvim",
+	requires = { "arsham/arshlib.nvim" },
+	config = function()
+		require("archer").config({})
+	end,
 })
 ```
 
@@ -51,10 +54,10 @@ To disable set them to `false`. For example:
 
 ```lua
 require("archer").config({
-  mappings = false,         -- completely disable mappings
-  textobj = {
-    in_char = nil,
-  },
+	mappings = false, -- completely disable mappings
+	textobj = {
+		in_char = nil,
+	},
 })
 ```
 
@@ -119,6 +122,10 @@ Here is the default settings:
       a_line = "al",
     },
     backtick = "`",
+    numeric = {
+      i_number = "iN",
+      a_number = "aN",
+    },
   },
 }
 ```
@@ -219,6 +226,10 @@ There are sets of **i\*** and **a\*** text objects, where `*` can be any of:
 **\_ . : , ; | / \ \* + - #**
 
 You can add more if you like.
+
+### In and Around Numbers
+
+With `iN` and `aN` you can operate on any numbers, even floating point numbers.
 
 ## License
 

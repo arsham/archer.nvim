@@ -38,6 +38,10 @@ local defaults = { --{{{1
       a_line = "al",
     },
     backtick = "`",
+    numeric = {
+      i_number = "iN",
+      a_number = "aN",
+    },
   },
 } --}}}
 

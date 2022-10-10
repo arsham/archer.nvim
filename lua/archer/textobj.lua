@@ -32,12 +32,27 @@ local function in_backticks(include) --{{{
   quick.normal("x", "h")
 end --}}}
 
+---Number pseudo-text object (integer and float) {{{
+---@param around boolean if true, remove the space after number.
+local function visual_number(around)
+  local last_num = [[\d\([^0-9\.]\|$\)]]
+  local first_num = [[\(^\|[^0-9\.]\d\)]]
+  vim.fn.search(last_num, "cW")
+  vim.fn.search(first_num, "becW")
+  quick.normal("xt", "o")
+  vim.fn.search(last_num, "cW")
+  if around then
+    quick.normal("x", "l")
+  end
+end ---}}}
+
 -- stylua: ignore start
 local function config(opts)
   vim.validate({--{{{
     next_obj  = { opts.next_obj,  { "table",  "boolean", "nil" }, true },
     in_chars  = { opts.in_chars,  { "table",  "boolean", "nil" }, true },
     line      = { opts.line,      { "table",  "boolean", "nil" }, true },
+    numeric   = { opts.numeric,   { "table",  "boolean", "nil" }, true },
     backticks = { opts.backticks, { "string", "boolean", "nil" }, true },
   })--}}}
 
@@ -89,6 +104,23 @@ local function config(opts)
       local opt = { desc = "around current line" }
       vim.keymap.set("x", "al", function() quick.normal("xt", "$o0") end, opt)
       vim.keymap.set("o", "al", function() quick.normal("x", "val") end, opt)
+    end
+  end --}}}
+
+  -- Numeric support {{{
+  if opts.numeric then
+    if opts.numeric.i_number then
+      local opt = { desc = "in numeric value" }
+      local key = opts.numeric.i_number
+      vim.keymap.set("x", key, visual_number, { desc = "in number" })
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
+    end
+
+    if opts.numeric.a_number then
+      local opt = { desc = "around numeric value" }
+      local key = opts.numeric.a_number
+      vim.keymap.set("x", key, function() visual_number(true) end, opt)
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end --}}}
 
