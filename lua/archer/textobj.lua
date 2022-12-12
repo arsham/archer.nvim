@@ -132,11 +132,11 @@ local function config(opts)
     local b = opts.backtick
 
     local opt = { silent = true, desc = "in backticks" }
-    vim.keymap.set("v", "i" .. b, function() in_backticks(false) end, opt)
+    vim.keymap.set("x", "i" .. b, function() in_backticks(false) end, opt)
     vim.keymap.set("o", "i" .. b, function() quick.normal("x", "vi" .. b) end, opt)
 
     opt = { silent = true, desc = "around backticks" }
-    vim.keymap.set("v", "a" .. b, function() in_backticks(true) end, opt)
+    vim.keymap.set("x", "a" .. b, function() in_backticks(true) end, opt)
     vim.keymap.set("o", "a" .. b, function() quick.normal("x", "va" .. b) end, opt)
   end --}}}
 
@@ -145,14 +145,14 @@ local function config(opts)
     if opts.fold.i_block then
       local opt = { silent = true, desc = "in fold block" }
       local key = opts.fold.i_block
-      vim.keymap.set("v", key, function() quick.normal("xt", "[zjo]zkV") end, opt)
+      vim.keymap.set("x", key, function() quick.normal("xt", "[zjo]zkV") end, opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
 
     if opts.fold.a_block then
       local opt = { silent = true, desc = "around fold blocks" }
       local key = opts.fold.a_block
-      vim.keymap.set("v", key, function() quick.normal("xt", "[zo]zV") end, opt)
+      vim.keymap.set("x", key, function() quick.normal("xt", "[zo]zV") end, opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end --}}}

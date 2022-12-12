@@ -130,7 +130,7 @@ local function setup_ending(opts) --{{{
       change_line_ends(tuple.add, false)
     end, opt)
 
-    vim.keymap.set("v", key1, function()
+    vim.keymap.set("x", key1, function()
       change_line_ends(tuple.add, false)
     end, opt)
     --}}}
@@ -149,7 +149,7 @@ local function setup_ending(opts) --{{{
       change_line_ends(tuple.add, true)
     end, opt)
 
-    vim.keymap.set("v", key2, function()
+    vim.keymap.set("x", key2, function()
       change_line_ends(tuple.add, true)
     end, opt)
     --}}}
@@ -162,18 +162,12 @@ local function augment_vim(opts)
     jumplist = { opts.jumplist, { "number", "boolean", "nil" }, false },
   })
 
-  -- stylua: ignore start
   if opts.jumplist and opts.jumplist > 1 then
-    vim.keymap.set("n", "k",
-      string.format([[(v:count > %s ? "m'" . v:count : '') . 'k']], opts.jumplist),
-      { expr = true, desc = "numbered motions in the jumplist" }
-    )
-    vim.keymap.set("n", "j",
-      string.format([[(v:count > %s ? "m'" . v:count : '') . 'j']], opts.jumplist),
-      { expr = true, desc = "numbered motions in the jumplist" }
-    )
+    local opt = { expr = true, desc = "numbered motions in the jumplist" }
+    local rhs = [[(v:count > %s ? "m'" . v:count : '') . '%s']]
+    vim.keymap.set("n", "k", string.format(rhs, opts.jumplist, "k"), opt)
+    vim.keymap.set("n", "j", string.format(rhs, opts.jumplist, "j"), opt)
   end
-  -- stylua: ignore end
 end
 
 
