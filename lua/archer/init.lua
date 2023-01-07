@@ -49,26 +49,27 @@ local defaults = { --{{{1
   },
 } --}}}
 
-local function config(opts) --{{{
-  opts = vim.tbl_deep_extend("force", defaults, opts)
+local function setup(opts) --{{{
+  opts = vim.tbl_deep_extend("force", defaults, opts or {})
   -- Validations {{{
   vim.validate({
-    opts = { opts, { "table", "boolean", "nil" }, false },
+    opts = { opts, { "table", "boolean" }, false },
     mappings = { opts.mappings, { "table", "boolean", "nil" }, false },
     textobj = { opts.textobj, { "table", "boolean", "nil" }, false },
   })
   -- }}}
 
   if opts.mappings then
-    require("archer.mappings").config(opts.mappings)
+    require("archer.mappings").setup(opts.mappings)
   end
   if opts.textobj then
-    require("archer.textobj").config(opts.textobj)
+    require("archer.textobj").setup(opts.textobj)
   end
 end --}}}
 
 return {
-  config = config,
+  setup = setup,
+  config = setup,
 }
 
 -- vim: fdm=marker fdl=1

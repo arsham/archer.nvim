@@ -47,7 +47,7 @@ local function visual_number(around)
 end ---}}}
 
 -- stylua: ignore start
-local function config(opts)
+local function setup(opts)
   vim.validate({--{{{
     next_obj  = { opts.next_obj,  { "table",  "boolean", "nil" }, true },
     in_chars  = { opts.in_chars,  { "table",  "boolean", "nil" }, true },
@@ -160,7 +160,8 @@ end
 -- stylua: ignore end
 
 return {
-  config = config,
+  setup = setup,
+  config = setup,
 }
 
 -- vim: fdm=marker fdl=0

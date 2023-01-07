@@ -8,6 +8,8 @@ add more mappings by providing keys to the config.
 
 1. [Requirements](#requirements)
 2. [Installation](#installation)
+   - [Lazy](#lazy)
+   - [Packer](#packer)
 3. [Mappings](#mappings)
    - [Empty Lines](#empty-lines)
    - [End of Lines](#end-of-lines)
@@ -34,7 +36,21 @@ as dependencies in your package manager:
 
 ## Installation
 
-Use your favourite package manager to install this library. Packer example:
+Use your favourite package manager to install this library.
+
+### Lazy
+
+```lua
+{
+	"arsham/archer.nvim",
+	dependencies = { "arsham/arshlib.nvim" },
+	config = true,
+  -- or to provide configuration
+  -- config = { mapping = false, ..}
+}
+```
+
+### Packer
 
 ```lua
 use({

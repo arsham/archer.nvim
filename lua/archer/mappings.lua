@@ -46,6 +46,7 @@ local last_key = ""
 function _G.add_to_line_end()
   change_line_ends(last_key, false)
 end
+-- selene: allow(global_usage)
 function _G.remove_from_line_end()
   change_line_ends(last_key, true)
 end
@@ -70,6 +71,7 @@ end --}}}
 function _G.empty_line_below()
   insert_empty_lines(vim.v.count, 0)
 end
+-- selene: allow(global_usage)
 function _G.empty_line_above()
   insert_empty_lines(vim.v.count, -1)
 end
@@ -170,9 +172,8 @@ local function augment_vim(opts)
   end
 end
 
-
--- stylua: ignore start
 local function config(opts) --{{{
+  -- stylua: ignore
   vim.validate({
     space    = { opts.space,  { "table", "boolean", "nil" }, true },
     ending   = { opts.ending, { "table", "boolean", "nil" }, true },
@@ -195,11 +196,10 @@ local function config(opts) --{{{
   if opts.augment_vim then --{{{
     augment_vim(opts.augment_vim)
   end --}}}
-
 end --}}}
--- stylua: ignore end
 
 return {
+  setup = config,
   config = config,
 }
 
