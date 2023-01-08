@@ -54,11 +54,11 @@ Use your favourite package manager to install this library.
 
 ```lua
 use({
-	"arsham/archer.nvim",
-	requires = { "arsham/arshlib.nvim" },
-	config = function()
-		require("archer").config({})
-	end,
+  "arsham/archer.nvim",
+  requires = { "arsham/arshlib.nvim" },
+  config = function()
+    require("archer").config({})
+  end,
 })
 ```
 
@@ -71,10 +71,10 @@ To disable set them to `false`. For example:
 
 ```lua
 require("archer").config({
-	mappings = false, -- completely disable mappings
-	textobj = {
-		in_char = nil,
-	},
+  mappings = false, -- completely disable mappings
+  textobj = {
+    in_char = nil,
+  },
 })
 ```
 
