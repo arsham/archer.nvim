@@ -167,8 +167,8 @@ local function augment_vim(opts)
   if opts.jumplist and opts.jumplist > 1 then
     local opt = { expr = true, desc = "numbered motions in the jumplist" }
     local rhs = [[(v:count > %s ? "m'" . v:count : '') . '%s']]
-    vim.keymap.set("n", "k", string.format(rhs, opts.jumplist, "k"), opt)
-    vim.keymap.set("n", "j", string.format(rhs, opts.jumplist, "j"), opt)
+    vim.keymap.set("n", "k", string.format(rhs, opts.jumplist, "gk"), opt)
+    vim.keymap.set("n", "j", string.format(rhs, opts.jumplist, "gj"), opt)
   end
 end
 
