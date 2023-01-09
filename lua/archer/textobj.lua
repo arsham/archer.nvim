@@ -13,7 +13,23 @@ local function next_obj(motion) --{{{
   quick.normal("x", sequence)
 end --}}}
 
--- Backtick support
+---Text object for in/around the context. A context is one or more lines above
+---and below the cursor.
+---@param is_pending boolean to manage the visual mode.
+local function context(is_pending) --{{{
+  local from = vim.v.count
+  local to = from * 2
+  if to == 0 then
+    to = 2
+  end
+  if not is_pending then
+    to = from
+  end
+  local motion = string.format("%dkVo%dj", from, to)
+  quick.normal("xt", motion)
+end --}}}
+
+---Backtick support
 ---@param include boolean if true, will remove the backticks too.
 local function in_backticks(include) --{{{
   quick.normal("n", "m'")
@@ -55,6 +71,7 @@ local function setup(opts)
     numeric   = { opts.numeric,   { "table",  "boolean", "nil" }, true },
     backticks = { opts.backticks, { "string", "boolean", "nil" }, true },
     folds     = { opts.folds,     { "table",  "boolean", "nil" }, true },
+    context   = { opts.context,   { "table",  "boolean", "nil" }, true },
   })--}}}
 
   -- Next object support {{{
@@ -156,7 +173,17 @@ local function setup(opts)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end --}}}
-end
+
+  -- Context support {{{
+  if opts.context then
+    for _, key in ipairs(opts.context) do
+      local opt = { desc = "in context" }
+      vim.keymap.set("x", key, function() context(false) end, opt)
+      vim.keymap.set("o", key, function() context(true) end, opt)
+    end
+  end --}}}
+end --}}}
+
 -- stylua: ignore end
 
 return {

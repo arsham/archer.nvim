@@ -46,6 +46,7 @@ local defaults = { --{{{1
       i_block = "iz",
       a_block = "az",
     },
+    context = { "ix", "ax" },
   },
 } --}}}
 

@@ -22,6 +22,7 @@ add more mappings by providing keys to the config.
    - [In and Around More Characters](#in-and-around-more-characters)
    - [In and Around Numbers](#in-and-around-numbers)
    - [In and Around Folds](#in-and-around-folds)
+   - [Context](#context)
 5. [License](#license)
 
 ## Requirements
@@ -147,6 +148,7 @@ Here is the default settings:
       i_block = "iz",
       a_block = "az",
     },
+    context = { "ix", "ax" },      -- n lines from above and below.
   },
 }
 ```
@@ -255,6 +257,27 @@ With `iN` and `aN` you can operate on any numbers, even floating point numbers.
 ### In and Around Folds
 
 `iz` and `az` matches in and around folds.
+
+### Context
+
+A context is one or more lines above the cursor, plus the same amount of lines
+below it.
+
+```
+
+              ┌────────────► Context of 2
+Line 1 ◄──────┼────────┐
+Line 2 ◄──────┴──────┐ │
+Line 3 ◄───────────┐ │ │
+Line 4 ◄── Cursor  │ │ ├───► Context of 3
+Line 5 ◄──────┬────┘ │ │
+Line 6 ◄──────┼──────┘ │
+Line 7 ◄──────┼────────┘
+              └────────────► Context of 1
+
+```
+
+From line 4, you can delete lines 2, 3, 4, 5 and 6 with `d3ix` or `d3ax`.
 
 ## License
 
