@@ -23,6 +23,7 @@ add more mappings by providing keys to the config.
    - [In and Around Numbers](#in-and-around-numbers)
    - [In and Around Folds](#in-and-around-folds)
    - [Context](#context)
+   - [Last Changed](#last-changed)
 5. [License](#license)
 
 ## Requirements
@@ -149,9 +150,13 @@ Here is the default settings:
       a_block = "az",
     },
     context = { "ix", "ax" },      -- n lines from above and below.
+    last_changed = { "iC", "aC" }, -- last pasted or changed text.
   },
 }
 ```
+
+For consistency, `context` and `last_changed` are given a table, otherwise
+there are no difference in and around motions.
 
 ## Mappings
 
@@ -278,6 +283,10 @@ Line 7 ◄──────┼────────┘
 ```
 
 From line 4, you can delete lines 2, 3, 4, 5 and 6 with `d3ix` or `d3ax`.
+
+### Last Changed
+
+For pasted or last text change. For example to yank the last change: `yaC`.
 
 ## License
 

@@ -72,6 +72,7 @@ local function setup(opts)
     backticks = { opts.backticks, { "string", "boolean", "nil" }, true },
     folds     = { opts.folds,     { "table",  "boolean", "nil" }, true },
     context   = { opts.context,   { "table",  "boolean", "nil" }, true },
+    last_changed = { opts.last_changed, { "table", "boolean", "nil" }, true },
   })--}}}
 
   -- Next object support {{{
@@ -182,6 +183,15 @@ local function setup(opts)
       vim.keymap.set("o", key, function() context(true) end, opt)
     end
   end --}}}
+
+  -- Last changed text support {{{
+  if opts.last_changed then
+    for _, key in ipairs(opts.last_changed) do
+      local opt = { desc = "in last changed text" }
+      vim.keymap.set("x", key, function() quick.normal("xt", "`]o`[") end, opt)
+      vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
+    end
+  end
 end --}}}
 
 -- stylua: ignore end
