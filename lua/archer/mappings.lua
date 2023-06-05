@@ -41,16 +41,6 @@ local function change_line_ends(char, remove) --{{{2
   end
 end --}}}
 
-local last_key = ""
--- selene: allow(global_usage)
-function _G.add_to_line_end()
-  change_line_ends(last_key, false)
-end
--- selene: allow(global_usage)
-function _G.remove_from_line_end()
-  change_line_ends(last_key, true)
-end
-
 ---Inserts empty lines near the cursor.
 ---@param count number  Number of lines to insert.
 ---@param add number 0 to insert below current line, -1 to insert above current
@@ -67,15 +57,6 @@ local function insert_empty_lines(count, add) --{{{2
   vim.api.nvim_buf_set_lines(0, pos[1] + add, pos[1] + add, false, lines)
 end --}}}
 
--- selene: allow(global_usage)
-function _G.empty_line_below()
-  insert_empty_lines(vim.v.count, 0)
-end
--- selene: allow(global_usage)
-function _G.empty_line_above()
-  insert_empty_lines(vim.v.count, -1)
-end
-
 local string_type = { "string", "nil", "boolean" }
 local function setup_space_mappings(opts) --{{{
   vim.validate({ --{{{
@@ -86,7 +67,7 @@ local function setup_space_mappings(opts) --{{{
   if opts.above then --{{{
     local desc = "insert [count]empty line(s) above current line"
     vim.keymap.set("n", opts.above, function()
-      vim.opt.opfunc = "v:lua.empty_line_above"
+      vim.opt.opfunc = "v:lua.require'archer.mappings'.empty_line_above"
       return "g@l"
     end, { silent = true, expr = true, desc = desc })
   end --}}}
@@ -94,11 +75,13 @@ local function setup_space_mappings(opts) --{{{
   if opts.below then --{{{
     local desc = "insert [count]empty line(s) below current line"
     vim.keymap.set("n", opts.below, function()
-      vim.opt.opfunc = "v:lua.empty_line_below"
+      vim.opt.opfunc = "v:lua.require'archer.mappings'.empty_line_below"
       return "g@l"
     end, { silent = true, expr = true, desc = desc })
   end --}}}
 end --}}}
+
+local last_key = ""
 
 ---Add coma at the end of the line, or the visually selected area.
 local function setup_ending(opts) --{{{
@@ -124,7 +107,7 @@ local function setup_ending(opts) --{{{
 
     vim.keymap.set("n", key1, function()
       last_key = tuple.add
-      vim.opt.opfunc = "v:lua.add_to_line_end"
+      vim.opt.opfunc = "v:lua.require'archer.mappings'.add_to_line_end"
       return "g@l"
     end, { expr = true, desc = desc })
 
@@ -143,7 +126,7 @@ local function setup_ending(opts) --{{{
 
     vim.keymap.set("n", key2, function()
       last_key = tuple.add
-      vim.opt.opfunc = "v:lua.remove_from_line_end"
+      vim.opt.opfunc = "v:lua.require'archer.mappings'.remove_from_line_end"
       return "g@l"
     end, { expr = true, desc = desc })
 
@@ -190,7 +173,7 @@ local function config(opts) --{{{
   if opts.brackets then --{{{
     local opt = { desc = "Insert a pair of brackets and go into insert mode" }
     vim.keymap.set("i", opts.brackets, "<Esc>A {<CR>}<Esc>O", opt)
-    vim.keymap.set("n", opts.brackets, "A {<CR>}<Esc>O",      opt)
+    vim.keymap.set("n", opts.brackets, "A {<CR>}<Esc>O", opt)
   end --}}}
 
   if opts.augment_vim then --{{{
@@ -201,6 +184,20 @@ end --}}}
 return {
   setup = config,
   config = config,
+
+  empty_line_below = function()
+    insert_empty_lines(vim.v.count, 0)
+  end,
+  empty_line_above = function()
+    insert_empty_lines(vim.v.count, -1)
+  end,
+
+  add_to_line_end = function()
+    change_line_ends(last_key, false)
+  end,
+  remove_from_line_end = function()
+    change_line_ends(last_key, true)
+  end,
 }
 
 -- vim: fdm=marker fdl=1
