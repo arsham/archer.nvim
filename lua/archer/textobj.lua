@@ -62,8 +62,12 @@ local function visual_number(around)
   end
 end ---}}}
 
--- stylua: ignore start
+local function sequence(keys)
+  return ":<C-u>silent! normal! " .. keys .. "<CR>"
+end
+
 local function setup(opts)
+  -- stylua: ignore start
   vim.validate({--{{{
     next_obj  = { opts.next_obj,  { "table",  "boolean", "nil" }, true },
     in_chars  = { opts.in_chars,  { "table",  "boolean", "nil" }, true },
@@ -102,11 +106,11 @@ local function setup(opts)
     end
     for _, ch in ipairs(chars) do
       local opt = { desc = "in pairs of " .. ch }
-      vim.keymap.set("x", "i" .. ch, function() quick.normal("xt", "T" .. ch .. "ot" .. ch) end, opt)
+      vim.keymap.set("x", "i" .. ch, sequence("T" .. ch .. "vt" .. ch), opt)
       vim.keymap.set("o", "i" .. ch, function() quick.normal("x", "vi" .. ch) end, opt)
 
       opt = { desc = "around pairs of " .. ch }
-      vim.keymap.set("x", "a" .. ch, function() quick.normal("xt", "F" .. ch .. "of" .. ch) end, opt)
+      vim.keymap.set("x", "a" .. ch, sequence("F" .. ch .. "vf" .. ch), opt)
       vim.keymap.set("o", "a" .. ch, function() quick.normal("x", "va" .. ch) end, opt)
     end
   end--}}}
@@ -116,14 +120,14 @@ local function setup(opts)
     if opts.line.i_line then
       local opt = { desc = "in current line" }
       local key = opts.line.i_line
-      vim.keymap.set("x", key, function() quick.normal("xt", "g_o^") end, opt)
+      vim.keymap.set("x", key, sequence("g_v^"), opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
 
     if opts.line.a_line then
       local opt = { desc = "around current line" }
       local key = opts.line.a_line
-      vim.keymap.set("x", key, function() quick.normal("xt", "$o0") end, opt)
+      vim.keymap.set("x", key, sequence("$v0"), opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end --}}}
@@ -163,14 +167,14 @@ local function setup(opts)
     if opts.fold.i_block then
       local opt = { silent = true, desc = "in fold block" }
       local key = opts.fold.i_block
-      vim.keymap.set("x", key, function() quick.normal("xt", "[zjo]zkV") end, opt)
+      vim.keymap.set("x", key, sequence("[zjv]zkV"), opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
 
     if opts.fold.a_block then
       local opt = { silent = true, desc = "around fold blocks" }
       local key = opts.fold.a_block
-      vim.keymap.set("x", key, function() quick.normal("xt", "[zo]zV") end, opt)
+      vim.keymap.set("x", key, sequence("[zv]zV"), opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end --}}}
@@ -188,7 +192,7 @@ local function setup(opts)
   if opts.last_changed then
     for _, key in ipairs(opts.last_changed) do
       local opt = { desc = "in last changed text" }
-      vim.keymap.set("x", key, function() quick.normal("xt", "`]o`[") end, opt)
+      vim.keymap.set("x", key, sequence("`]v`["), opt)
       vim.keymap.set("o", key, function() quick.normal("x", "v" .. key) end, opt)
     end
   end
