@@ -1,0 +1,327 @@
+*archer.txt* *archer.nvim*      Powerful mappings and text-objects for Archers
+
+
+       :::.    :::::::..     .,-:::::   ::   .: .,:::::: :::::::..       ~
+       ;;`;;   ;;;;``;;;;  ,;;;'````'  ,;;   ;;,;;;;'''' ;;;;``;;;;      ~
+      ,[[ '[[,  [[[,/[[['  [[[        ,[[[,,,[[[ [[cccc   [[[,/[[['      ~
+     c$$$cc$$$c $$$$$$c    $$$        "$$$"""$$$ $$""""   $$$$$$c        ~
+      888   888,888b "88bo,`88bo,__,o, 888   "88o888oo,__ 888b "88bo,    ~
+      YMM   ""` MMMM   "W"   "YUMMMMMP"MMM    YMM""""YUMMMMMMM   "W"     ~
+
+
+Author:   Arsham Shirvani <arsham@duck.com>
+Homepage: <https://github.com/arsham/archer.nvim>
+License:  MIT license
+
+==============================================================================
+CONTENTS                                                     *archer-contents*
+
+1. Introduction ........................................ |archer-introduction|
+2. Requirements ........................................ |archer-requirements|
+3. Installation ........................................ |archer-installation|
+    - Lazy ..................................................... |archer-lazy|
+    - Packer ................................................. |archer-packer|
+    - Configuration ................................... |archer-configuration|
+4. Mappings ................................................ |archer-mappings|
+    - Empty Lines ....................................... |archer-empty-lines|
+    - End of Lines ..................................... |archer-end-of-lines|
+    - Pair of Brackets ............................. |archer-pair-of-brackets|
+5. Augmentation ........................................ |archer-augmentation|
+6. Text Objects .........................................|archer-text-objects|
+    - Next Object ....................................... |archer-next-object|
+    - Pseudo Line ....................................... |archer-pseudo-line|
+    - In and Around Backticks ............... |archer-in-and-around-backticks|
+    - In and Around More Characters ... |archer-in-and-around-more-characters|
+    - In and Around Numbers ................... |archer-in-and-around-numbers|
+    - In and Around Folds ....................... |archer-in-and-around-folds|
+    - Context ............................................... |archer-context|
+    - Last Changed ..................................... |archer-last-changed|
+7. License .................................................. |archer-license|
+
+==============================================================================
+INTRODUCTION                                             *archer-introduction*
+
+This Neovim plugin provides key-mapping and text objects for archers. You can
+add more mappings by providing keys to the config.
+
+==============================================================================
+REQUIREMENTS                                             *archer-requirements*
+
+This plugin supports Neovim v0.9.0 or newer.
+
+This plugin depends are the |arshlib.nvim|. Please make sure to add it as
+dependencies in your package manager.
+
+
+==============================================================================
+INSTALLATION                                             *archer-installation*
+
+Use your favourite package manager to install this library.
+
+------------------------------------------------------------------------------
+LAZY                                                             *archer-lazy*
+
+>lua
+  {
+  	"arsham/archer.nvim",
+  	dependencies = { "arsham/arshlib.nvim" },
+  	config = true,
+    -- or to provide configuration
+    -- config = { mapping = false, ..}
+  }
+<
+
+------------------------------------------------------------------------------
+PACKER                                                         *archer-packer*
+
+>lua
+  use({
+    "arsham/archer.nvim",
+    requires = { "arsham/arshlib.nvim" },
+    config = function()
+      require("archer").config({})
+    end,
+  })
+<
+
+------------------------------------------------------------------------------
+CONFIGURATION                                           *archer-configuration*
+
+By default this pluging adds all necessary commands and mappings. However you
+can change or disable them to your liking.
+
+To disable set them to `false`. For example:
+>lua
+  require("archer").config({
+    mappings = false, -- completely disable mappings
+    textobj = {
+      in_char = nil,
+    },
+  })
+<
+
+You can add your own keys to `ending` and `in_chars` by adding to the config
+options. For instance if you want to have an extra `ending` mapping for `s`,
+which makes `S` the removal part, or whatever else you choose:
+>lua
+  {
+    mappings = {
+      ending = {
+        ending_o = { -- this name is arbitrary but should be unique
+          add = "o",
+          remove = "O",
+        },
+      },
+    },
+    textobj = {
+      extra_in_chars = { "a", "b", "c" }, -- don't replace the in_chars
+    },
+  }
+<
+
+Here is the default settings:
+>lua
+  {
+    mappings = {
+      space = {
+        before = "[<space>",
+        after = "]<space>",
+      },
+      ending = {
+        period = {
+          add = ".",
+          remove = ">",
+        },
+        comma = {
+          add = ",",
+          remove = "lt",
+        },
+        semicolon = {
+          add = ";",
+          remove = ":",
+        },
+      },
+      brackets = "<M-{>",
+      augment_vim = {
+        jumplist = 4, -- put in jumplist if count of j/k is more than 4
+      },
+    },
+    textobj = {
+      next_obj = {
+        i_next = "in",
+        a_next = "an",
+      },
+      -- i_ i. i: i, i; i| i/ i\ i* i+ i- i#
+      -- a_ a. a: a, a; a| a/ a\ a* a+ a- a#
+      in_chars = { "_", ".", ":", ",", ";", "|", "/", "\\", "*", "+", "-", "#" },
+      line = {
+        i_line = "il",
+        a_line = "al",
+      },
+      backtick = "`",
+      numeric = {
+        i_number = "iN",
+        a_number = "aN",
+      },
+      fold = {
+        i_block = "iz",
+        a_block = "az",
+      },
+      context = { "ix", "ax" },      -- n lines from above and below.
+      last_changed = { "iC", "aC" }, -- last pasted or changed text.
+    },
+  }
+<
+
+For consistency, `context` and `last_changed` are given a table, otherwise
+there are no difference in and around motions.
+
+==============================================================================
+MAPPINGS                                                     *archer-mappings*
+
+------------------------------------------------------------------------------
+EMPTY LINES                                               *archer-empty-lines*
+
+Normal mode only:
+
+*[-SPACE*          Add [count] empty line(s) above without moving
+*]-SPACE*          Add [count] empty line(s) below without moving
+
+------------------------------------------------------------------------------
+END OF LINES                                             *archer-end-of-lines*
+
+`Normal`, `insert` and `visual` mode. The idea is an opposite of adding a key
+should be the same key with `shift`. The default `modifier` key is the `Alt`
+key. You can change it if you need to.
+
+To add/remove to/from a block of text, visually select them and initiate.
+
+*ALT-.*            Add period to the end of the line
+*ALT->*            Remove period from the end of the line
+*ALT-,*            Add comma to the end of the line
+*ALT-<*            Remove comma from the end of the line
+*ALT-;*            Add Semicolon to the end of the line
+*ALT-:*            Remove semicolon from the end of the line
+
+You can add more if you want.
+
+------------------------------------------------------------------------------
+PAIR OF BRACKETS                                     *archer-pair-of-brackets*
+
+In `normal` and `insert` modes, you can hit the *<ALT-{>* (read *ALT-SHIFT-[*)
+key to add a pair of brackets at the end of line and enter in the block on the
+next line:
+
+Assuming the cursor is at `|` and you initiate |<ALT-{>|, before the action:
+>lua
+  for a := 0|; a < 10; a++
+<
+
+After:
+>lua
+  for a := 0; a < 10; a++ {
+      |
+  }
+<
+
+==============================================================================
+AUGMENTATION                                             *archer-augmentation*
+
+At the moment we have one augmentation. By default we hook into numbered jumps
+(j and k), and if the count is greater than the value, we populate the jump
+list. To change the count number:
+>lua
+  {
+    mappings = {
+      augment_vim = {
+        jumplist = 2,
+      },
+    },
+  }
+<
+
+==============================================================================
+TEXT OBJECTS                                             *archer-text-objects*
+
+------------------------------------------------------------------------------
+NEXT OBJECT                                               *archer-next-object*
+
+*o_in* *o_an*
+
+Works like normal `i` and `a`, but operates on the next pair. For example in
+the following example assuming the cursor `|` is at the beginning of the line,
+`cin(` will put you in the inner `()`:
+
+Before:
+>lua
+  |tx.Query(ctx, getQuery(badNameQuery))
+<
+
+After:
+>lua
+  tx.Query(ctx, getQuery(|))
+<
+
+------------------------------------------------------------------------------
+PSEUDO LINE                                               *archer-pseudo-line*
+
+*il* and *al* work for a line.
+
+------------------------------------------------------------------------------
+IN AND AROUND BACKTICKS                       *archer-in-and-around-backticks*
+
+You can do "di`" or "ya`" for multi-line backtick operations.
+
+------------------------------------------------------------------------------
+IN AND AROUND MORE CHARACTERS           *archer-in-and-around-more-characters*
+
+There are sets of i* and a* text objects, where `*` can be any of:
+_ . : , ; | / \ * + - #
+
+You can add more if you like.
+
+------------------------------------------------------------------------------
+IN AND AROUND NUMBERS                           *archer-in-and-around-numbers*
+
+With *iN* and *aN* you can operate on any numbers even floating point numbers.
+
+------------------------------------------------------------------------------
+IN AND AROUND FOLDS                               *archer-in-and-around-folds*
+
+*iz* and *az* matches in and around folds.
+
+------------------------------------------------------------------------------
+CONTEXT                                            *ix*, *ax* *archer-context*
+
+
+
+A context is one or more lines above the cursor, plus the same amount of lines
+below it.
+>lua
+                  ┌────────────► Context of 2
+    Line 1 ◄──────┼────────┐
+    Line 2 ◄──────┴──────┐ │
+    Line 3 ◄───────────┐ │ │
+    Line 4 ◄── Cursor  │ │ ├───► Context of 3
+    Line 5 ◄──────┬────┘ │ │
+    Line 6 ◄──────┼──────┘ │
+    Line 7 ◄──────┼────────┘
+                  └────────────► Context of 1
+<
+
+From line 4, you can delete lines 2, 3, 4, 5 and 6 with `d3ix` or `d3ax`.
+
+------------------------------------------------------------------------------
+LAST CHANGED                                        *aC* *archer-last-changed*
+
+For pasted or last text change. For example to yank the last change: `yaC`.
+
+==============================================================================
+LICENSE                                                       *archer-license*
+
+Licensed under the MIT License. Check the ./LICENSE file for details.
+
+
+*arshlib.nvim*: <https://github.com/arsham/arshlib.nvim>
+
+vim:tw=78:ft=help
