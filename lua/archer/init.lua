@@ -52,14 +52,19 @@ local defaults = { --{{{1
 } --}}}
 
 local function setup(opts) --{{{
-  opts = vim.tbl_deep_extend("force", defaults, opts or {})
+  opts = vim.tbl_deep_extend("force", { default_mappings = true }, opts or {})
   -- Validations {{{
   vim.validate({
     opts = { opts, { "table", "boolean" }, false },
+    default_mappings = { opts.default_mappings, { "boolean" }, false },
     mappings = { opts.mappings, { "table", "boolean", "nil" }, false },
     textobj = { opts.textobj, { "table", "boolean", "nil" }, false },
   })
   -- }}}
+
+  if opts.default_mappings then
+    opts = defaults
+  end
 
   if opts.mappings then
     require("archer.mappings").setup(opts.mappings)

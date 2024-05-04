@@ -176,6 +176,22 @@ Here is the default settings:
 For consistency, `context` and `last_changed` are given a table, otherwise
 there are no difference in and around motions.
 
+In order to disable all mappings and textobjs and only enable the ones you
+need, you can also set the `default_mappings` to false, and set the values you
+require. In the following example only the mappings for adding spaces
+above/below current line is set, and everything else is ignored:
+>lua
+  require("archer").config({
+    default_mappings = false,
+    mappings = {
+      space = {
+        before = "[<space>",
+        after = "]<space>",
+      },
+    }
+  })
+<
+
 ==============================================================================
 MAPPINGS                                                     *archer-mappings*
 

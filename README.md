@@ -10,12 +10,13 @@ add more mappings by providing keys to the config.
 2. [Installation](#installation)
    - [Lazy](#lazy)
    - [Packer](#packer)
+   - [Configuration](#configuration)
 3. [Mappings](#mappings)
    - [Empty Lines](#empty-lines)
    - [End of Lines](#end-of-lines)
    - [Pair of Brackets](#pair-of-brackets)
-   - [Augmentation](#augmentation)
-4. [Text Objects](#text-objects)
+4. [Augmentation](#augmentation)
+5. [Text Objects](#text-objects)
    - [Next Object](#next-object)
    - [Pseudo Line](#pseudo-line)
    - [In and Around Backticks](#in-and-around-backticks)
@@ -24,7 +25,7 @@ add more mappings by providing keys to the config.
    - [In and Around Folds](#in-and-around-folds)
    - [Context](#context)
    - [Last Changed](#last-changed)
-5. [License](#license)
+6. [License](#license)
 
 ## Requirements
 
@@ -64,7 +65,7 @@ use({
 })
 ```
 
-### Config
+### Configuration
 
 By default this pluging adds all necessary commands and mappings. However you
 can change or disable them to your liking.
@@ -158,6 +159,23 @@ Here is the default settings:
 For consistency, `context` and `last_changed` are given a table, otherwise
 there are no difference in and around motions.
 
+In order to disable all mappings and textobjs and only enable the ones you
+need, you can also set the `default_mappings` to false, and set the values you
+require. In the following example only the mappings for adding spaces
+above/below current line is set, and everything else is ignored:
+
+```lua
+require("archer").config({
+  default_mappings = false,
+  mappings = {
+    space = {
+      before = "[<space>",
+      after = "]<space>",
+    },
+  },
+})
+```
+
 ## Mappings
 
 ### Empty Lines
@@ -246,7 +264,7 @@ tx.Query(ctx, getQuery(|))
 
 ### In and Around Backticks
 
-You can do `` "di`" `` or `` "ya`" `` for multi-line backtick operations.
+You can do ``"di`"`` or ``"ya`"`` for multi-line backtick operations.
 
 ### In and Around More Characters
 
