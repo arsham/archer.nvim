@@ -155,6 +155,14 @@ local function augment_vim(opts)
   end
 end
 
+local function substitute(type)
+  local cur = vim.fn.getpos("''")
+  vim.api.nvim_win_set_cursor(0, { cur[2], cur[3] })
+  local cword = vim.fn.expand("<cword>")
+  vim.cmd("'[,']s/" .. cword .. "/" .. vim.fn.input(cword .. "/") .. "/g")
+  vim.api.nvim_win_set_cursor(0, { cur[2], cur[3] })
+end
+
 local function config(opts) --{{{
   -- stylua: ignore
   vim.validate({
@@ -179,6 +187,15 @@ local function config(opts) --{{{
   if opts.augment_vim then --{{{
     augment_vim(opts.augment_vim)
   end --}}}
+
+  if opts.substitute then
+    vim.keymap.set(
+      "n",
+      opts.substitute,
+      "m':set opfunc=v:lua.require'archer.mappings'.substitute<CR>g@",
+      { desc = "Substitute current word in the given motion" }
+    )
+  end
 end --}}}
 
 return {
@@ -198,6 +215,7 @@ return {
   remove_from_line_end = function()
     change_line_ends(last_key, true)
   end,
+  substitute = substitute,
 }
 
 -- vim: fdm=marker fdl=1

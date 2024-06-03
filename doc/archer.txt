@@ -26,6 +26,7 @@ CONTENTS                                                     *archer-contents*
     - Empty Lines ....................................... |archer-empty-lines|
     - End of Lines ..................................... |archer-end-of-lines|
     - Pair of Brackets ............................. |archer-pair-of-brackets|
+    - Substitute in Motion ..................... |archer-substitute-in-motion|
 5. Augmentation ........................................ |archer-augmentation|
 6. Text Objects .........................................|archer-text-objects|
     - Next Object ....................................... |archer-next-object|
@@ -239,6 +240,13 @@ After:
       |
   }
 <
+
+------------------------------------------------------------------------------
+SUBSTITUTE IN MOTION                             *archer-substitute-in-motion*
+
+This mapping lets you substitude the word the cursor is currently on, in the
+next motion. Once initiated, you are presented with a replace command.
+
 
 ==============================================================================
 AUGMENTATION                                             *archer-augmentation*

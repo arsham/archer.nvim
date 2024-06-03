@@ -15,6 +15,7 @@ add more mappings by providing keys to the config.
    - [Empty Lines](#empty-lines)
    - [End of Lines](#end-of-lines)
    - [Pair of Brackets](#pair-of-brackets)
+   - [Substitute in Motion](#substitute-in-motion)
 4. [Augmentation](#augmentation)
 5. [Text Objects](#text-objects)
    - [Next Object](#next-object)
@@ -221,6 +222,8 @@ for a := 0; a < 10; a++ {
     |
 }
 ```
+
+### Substitute in Motion
 
 ## Augmentation
 

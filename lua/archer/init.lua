@@ -23,6 +23,7 @@ local defaults = { --{{{1
     augment_vim = {
       jumplist = 4, -- put in jumplist if count of j/k is more than 4
     },
+    substitute = "gS",
   },
 
   textobj = {
@@ -52,7 +53,14 @@ local defaults = { --{{{1
 } --}}}
 
 local function setup(opts) --{{{
-  opts = vim.tbl_deep_extend("force", { default_mappings = true }, opts or {})
+  local def_opts = defaults
+  if opts.default_mappings == false then
+    def_opts = {}
+  else
+    opts.default_mappings = true
+  end
+
+  opts = vim.tbl_deep_extend("force", def_opts, opts or {})
   -- Validations {{{
   vim.validate({
     opts = { opts, { "table", "boolean" }, false },
@@ -61,10 +69,6 @@ local function setup(opts) --{{{
     textobj = { opts.textobj, { "table", "boolean", "nil" }, false },
   })
   -- }}}
-
-  if opts.default_mappings then
-    opts = defaults
-  end
 
   if opts.mappings then
     require("archer.mappings").setup(opts.mappings)

@@ -31,6 +31,7 @@ archer-packer	archer.txt	/*archer-packer*
 archer-pair-of-brackets	archer.txt	/*archer-pair-of-brackets*
 archer-pseudo-line	archer.txt	/*archer-pseudo-line*
 archer-requirements	archer.txt	/*archer-requirements*
+archer-substitute-in-motion	archer.txt	/*archer-substitute-in-motion*
 archer-text-objects	archer.txt	/*archer-text-objects*
 archer.nvim	archer.txt	/*archer.nvim*
 archer.txt	archer.txt	/*archer.txt*
